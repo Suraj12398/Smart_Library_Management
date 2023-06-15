@@ -4,16 +4,19 @@ import java.util.List;
 
 import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
-import com.smartlab.entity.Librarian;
+//import com.smartlab.entity.Librarian;
 import com.smartlab.entity.Rental;
 
 public interface LibrarianService {
-	 Librarian registerLibrarian(String librarianName, String username, String password);
-	    Librarian login(String username, String password);
-	    Book addBook(Librarian librarian, String title, String author, String genre);
-	    boolean updateBookInformation(Librarian librarian, Book book);
-	    boolean removeBook(Librarian librarian, Book book);
-	    List<Rental> viewStudentRentals(Librarian librarian);
-	    List<Feedback> viewBookFeedbacks(Librarian librarian);
-	    void logout(Librarian librarian);
+//		Librarian registerLibrarian(String librarianName, String username, String password);
+//	    Librarian login(String username, String password);
+
+//	    boolean updateBookInformation(Librarian librarian, Book book);
+//	    boolean removeBook(Librarian librarian, Book book);
+	    List<Rental> viewStudentRentals();
+	    List<Feedback> viewBookFeedbacks();
+//	    void logout(Librarian librarian);
+		Book addBook(Book book);
+		boolean removeBook(int id);
+		boolean updateBookInformation(Book book);
 }

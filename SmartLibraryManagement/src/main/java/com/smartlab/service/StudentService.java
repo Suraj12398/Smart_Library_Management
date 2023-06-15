@@ -13,7 +13,7 @@ public interface StudentService {
 	    List<Book> viewAvailableBooks();
 	    List<Book> searchBooksByCriteria(String criteria);
 	    Rental rentBook(Student student, Book book);
-//	    boolean returnBook(Student student, Book book);
+	    boolean returnBook(Student student, Book book);
 	    Feedback provideFeedback(Student student, Book book, String comment, int rating);
 //	    void logout(Student student);
 		boolean returnBook(Rental rental);
