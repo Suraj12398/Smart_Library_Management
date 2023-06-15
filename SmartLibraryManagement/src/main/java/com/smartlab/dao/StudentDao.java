@@ -11,9 +11,11 @@ public interface StudentDao {
 	Student save(Student student);
     Student findByUsername(String username);
     List<Book> findAvailableBooks();
-    List<Book> searchBooksByCriteria(String criteria);
+    List<Book> searchBooksByGenre(String genre);
     Rental saveRental(Rental rental);
     boolean updateRental(Rental rental);
     boolean deleteRental(Rental rental);
     Feedback saveFeedback(Feedback feedback);
+	List<Book> searchBooksByTitle(String title);
+	boolean login(String username);
 }

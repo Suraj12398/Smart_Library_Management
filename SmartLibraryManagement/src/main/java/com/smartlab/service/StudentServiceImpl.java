@@ -51,4 +51,10 @@ public class StudentServiceImpl implements StudentService {
 		return false;
 	}
 
+	@Override
+	public boolean returnBook(Student student, Book book) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -2,9 +2,11 @@ package com.smartlab.entity;
 
 import java.util.List;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,7 @@ public class Book {
     @Column(name = "book_id")
     private int bookId;
 
-    @Column(name = "title")
+    @Column(name = "title",unique = true)
     private String title;
 
     @Column(name = "author")
@@ -32,16 +34,16 @@ public class Book {
 
     @Column(name = "availability")
     private boolean availability;
-
+    
     
 
     // Many-to-One relationship with Librarian
-    @ManyToOne
-    @JoinColumn(name = "librarian_id")
-    private Librarian librarian;
+//    @ManyToOne
+//    @JoinColumn(name = "librarian_id")
+//    private Librarian librarian;
 
     // Many-to-One relationship with Feedback
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Feedback> feedbacks;
 
 	public Book() {
@@ -49,14 +51,14 @@ public class Book {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Book(String title, String author, String genre, boolean availability, Librarian librarian,
+	public Book(String title, String author, String genre, boolean availability,
 			List<Feedback> feedbacks) {
 		super();
 		this.title = title;
 		this.author = author;
 		this.genre = genre;
 		this.availability = availability;
-		this.librarian = librarian;
+//		this.librarian = librarian;
 		this.feedbacks = feedbacks;
 	}
 
@@ -64,9 +66,9 @@ public class Book {
 		return bookId;
 	}
 
-//	public void setBookId(int bookId) {
-//		this.bookId = bookId;
-//	}
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
+	}
 
 	public String getTitle() {
 		return title;
@@ -100,13 +102,13 @@ public class Book {
 		this.availability = availability;
 	}
 
-	public Librarian getLibrarian() {
-		return librarian;
-	}
-
-	public void setLibrarian(Librarian librarian) {
-		this.librarian = librarian;
-	}
+//	public Librarian getLibrarian() {
+//		return librarian;
+//	}
+//
+//	public void setLibrarian(Librarian librarian) {
+//		this.librarian = librarian;
+//	}
 
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;
@@ -119,7 +121,7 @@ public class Book {
 	@Override
 	public String toString() {
 		return "Book [bookId=" + bookId + ", title=" + title + ", author=" + author + ", genre=" + genre
-				+ ", availability=" + availability + ", librarian=" + librarian + ", feedbacks=" + feedbacks + "]";
+				+ ", availability=" + availability + ", feedbacks=" + feedbacks + "]";
 	}
 
     
