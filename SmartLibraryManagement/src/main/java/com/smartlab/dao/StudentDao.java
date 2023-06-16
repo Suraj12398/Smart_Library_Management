@@ -9,13 +9,13 @@ import com.smartlab.entity.Student;
 
 public interface StudentDao {
 	Student save(Student student);
-    Student findByUsername(String username);
+//    Student findByUsername(String username);
     List<Book> findAvailableBooks();
     List<Book> searchBooksByGenre(String genre);
-    Rental saveRental(Rental rental);
-    boolean updateRental(Rental rental);
-    boolean deleteRental(Rental rental);
-    Feedback saveFeedback(Feedback feedback);
+    void saveRental(Rental rental);
+    void updateRental(Rental rental);
+    void saveFeedback(Feedback feedback);
 	List<Book> searchBooksByTitle(String title);
-	boolean login(String username);
+	void login(String username, String password);
+	Book findBookById(int id);
 }

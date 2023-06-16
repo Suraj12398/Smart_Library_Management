@@ -49,9 +49,9 @@ public class Feedback {
 		return feedbackId;
 	}
 
-//	public void setFeedbackId(int feedbackId) {
-//		this.feedbackId = feedbackId;
-//	}
+	public void setFeedbackId(int feedbackId) {
+		this.feedbackId = feedbackId;
+	}
 
 	public Student getStudent() {
 		return student;
@@ -85,11 +85,11 @@ public class Feedback {
 		this.rating = rating;
 	}
 
-	@Override
-	public String toString() {
-		return "Feedback [feedbackId=" + feedbackId + ", student=" + student + ", book=" + book + ", comment=" + comment
-				+ ", rating=" + rating + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Feedback [feedbackId=" + feedbackId + ", student=" + student + ", book=" + book + ", comment=" + comment
+//				+ ", rating=" + rating + "]";
+//	}
 
     
 }

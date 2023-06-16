@@ -1,12 +1,11 @@
 package com.smartlab.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
-//import com.smartlab.entity.Librarian;
 import com.smartlab.entity.Rental;
+import com.smartlab.entity.Student;
 
 public interface LibrarianDao {
 //		Librarian save(Librarian librarian);
@@ -17,4 +16,6 @@ public interface LibrarianDao {
 	    List<Rental> findStudentRentals();
 	    List<Feedback> findBookFeedbacks();
 		boolean deleteBook(int id);
+		List<Student> findByUsername(String username);
+		List<Student> findAllStudent();
 }

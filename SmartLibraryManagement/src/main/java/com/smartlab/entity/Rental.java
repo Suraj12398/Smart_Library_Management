@@ -5,6 +5,7 @@ import java.sql.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +35,23 @@ public class Rental {
     @Column(name = "return_date")
     private Date returnDate;
 
-	
+    @Column(name = "fine")
+    private long fine;
+
+		
+
+	public long getFine() {
+		return fine;
+	}
+
+	public void setFine(long fine) {
+		this.fine = fine;
+	}
+
+	public Rental() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Rental(Student student, Book book, Date rentalDate, Date returnDate) {
 		super();
@@ -48,9 +65,9 @@ public class Rental {
 		return rentalId;
 	}
 
-//	public void setRentalId(int rentalId) {
-//		this.rentalId = rentalId;
-//	}
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
 
 	public Student getStudent() {
 		return student;
@@ -84,11 +101,11 @@ public class Rental {
 		this.returnDate = returnDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Rental [rentalId=" + rentalId + ", student=" + student + ", book=" + book + ", rentalDate=" + rentalDate
-				+ ", returnDate=" + returnDate + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Rental [rentalId=" + rentalId + ", student=" + student + ", book=" + book + ", rentalDate=" + rentalDate
+//				+ ", returnDate=" + returnDate + "]";
+//	}
 
   
 }
