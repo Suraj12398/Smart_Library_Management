@@ -5,9 +5,11 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -22,17 +24,33 @@ public class Student {
     @Column(name = "student_name")
     private String studentName;
 
-    @Column(name = "username")
+    @Column(name = "username",unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
+    @Column(name = "isDeleted",columnDefinition = "boolean default false")
+    private boolean isDeleted;
 
 
     // One-to-Many relationship with Rental
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Rental> rentals;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Feedback> feedbacks;
+
+  
+	public List<Feedback> getFeedbacks() {
+		return feedbacks;
+	}
+
+
+
+	public void setFeedbacks(List<Feedback> feedbacks) {
+		this.feedbacks = feedbacks;
+	}
 
 
 
@@ -43,12 +61,31 @@ public class Student {
 
 
 
-	public Student(String studentName, String username, String password, List<Rental> rentals) {
+	public Student(String studentName, String username, String password,List<Rental> rentals) {
 		super();
 		this.studentName = studentName;
 		this.username = username;
 		this.password = password;
+		
 		this.rentals = rentals;
+	}
+
+
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+
+
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
 	}
 
 
@@ -109,6 +146,14 @@ public class Student {
 
 	public void setRentals(List<Rental> rentals) {
 		this.rentals = rentals;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Student [studentId=" + studentId + ", studentName=" + studentName + ", username=" + username
+				+ ", password=" + password + ", isDeleted=" + isDeleted + ", rentals=" + rentals + "]";
 	}
 
    

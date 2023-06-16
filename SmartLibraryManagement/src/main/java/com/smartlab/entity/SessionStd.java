@@ -4,13 +4,14 @@ public class SessionStd {
 
 	private static Student currentStd;
 
-    public static Student getCurrentUser() {
+    public static Student getCurrentStd() {
         return currentStd;
     }
 
-    public void setCurrentUser(Student std) {
+    public static void setCurrentStd(Student std) {
         currentStd = std;
     }
+
 	
 	
 }

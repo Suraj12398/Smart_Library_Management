@@ -1,7 +1,9 @@
 package com.smartlab.dao;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
@@ -36,11 +38,11 @@ public class StudentDaoImpl implements StudentDao {
 		return student;
 	}
 
-	@Override
-	public Student findByUsername(String username) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+//	@Override
+//	public Student findByUsername(String username) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	@Override
 	public List<Book> findAvailableBooks() {
@@ -48,7 +50,32 @@ public class StudentDaoImpl implements StudentDao {
 		LibrarianDao ld= new LibrarianDaoImpl();
 		return ld.viewBookAvailable();
 	}
-
+	
+	
+	@Override
+public Book findBookById(int id) {
+		EntityManager em = null;
+//		EntityTransaction et=null;
+		try {
+			em = EMUtils.getEntityManager();
+			Book bookdb=em.find(Book.class, id);
+			if(bookdb==null) {
+				System.out.println("Please enter Valid Book details");
+			}
+			else {
+				return bookdb;
+			}
+			
+		}catch(PersistenceException ex) {
+			ex.getMessage();
+		}finally{
+			em.close();
+		}
+	return null;
+	
+}
+	
+	
 	@Override
 	public List<Book> searchBooksByGenre(String genre) {
 		// TODO Auto-generated method stub
@@ -94,53 +121,114 @@ return bookList;
 return bookList;
 	}
 	@Override
-	public Rental saveRental(Rental rental) {
+	public void saveRental(Rental rental) {
 		// TODO Auto-generated method stub
-		return null;
+		// TODO Auto-generated method stub
+				EntityManager em = null;
+				EntityTransaction et=null;
+				try {
+					rental.getBook().setAvailability(true);
+					em = EMUtils.getEntityManager();
+					et = em.getTransaction();
+					et.begin();
+					em.persist(rental);
+					et.commit();
+				}catch(PersistenceException ex) {
+					System.out.println("Duplicate entry");
+					ex.getMessage();
+				}finally{
+					em.close();
+				}
+
 	}
 
 	@Override
-	public boolean updateRental(Rental rental) {
+	public void updateRental(Rental rental) {
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteRental(Rental rental) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Feedback saveFeedback(Feedback feedback) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean login(String username) {
 		EntityManager em = null;
+		EntityTransaction et=null;
 		try {
-			SessionStd currentStd=new SessionStd();
 			em = EMUtils.getEntityManager();
-			Student std = em.find(Student.class,username);
-			
-			if(std.equals(null)) {
-				System.out.println("Please enter Valid Student Id");
-				return false;
+			Rental rent=em.find(Rental.class, rental.getRentalId());
+			if(rent==null) {
+				System.out.println("Please enter correct rental id");
 			}
-			EntityTransaction et = em.getTransaction();
-			et.begin();
-			currentStd.setCurrentUser(std);
-			et.commit();
+			else {
+				et = em.getTransaction();
+				et.begin();
+
+				rent.setReturnDate(rental.getReturnDate());
+				long differenceInReturn=rent.getReturnDate().getTime() - rent.getRentalDate().getTime();
+				
+				System.out.println(TimeUnit.MILLISECONDS.toDays(differenceInReturn));
+				if(TimeUnit.MILLISECONDS.toDays(differenceInReturn)>7) {
+					rent.setFine((TimeUnit.MILLISECONDS.toDays(differenceInReturn)/7)*5);
+				}else {
+					rent.setFine(0);
+				}
+				et.commit();
+			}
+			
 		}catch(PersistenceException ex) {
-				ex.getMessage();
+			ex.getMessage();
 		}finally{
 			em.close();
 		}
-		return true;
+	}
 
+	
 
+	@Override
+	public void saveFeedback(Feedback feedback) {
+		// TODO Auto-generated method stub
+		EntityManager em = null;
+		EntityTransaction et=null;
+		try {
+			em = EMUtils.getEntityManager();
+			et = em.getTransaction();
+			feedback.getBook().getFeedbacks().add(feedback);
+			feedback.getStudent().getFeedbacks().add(feedback);
+			et.begin();
+			em.persist(feedback);
+			et.commit();
+		}catch(PersistenceException ex) {
+			System.out.println("Duplicate entry");
+			ex.getMessage();
+		}finally{
+			em.close();
+		}
+	}
+
+	@Override
+	public void login(String username,String password) {
+		EntityManager em = null;
+		try {
+			em = EMUtils.getEntityManager();
+			
+			Query query = em.createQuery("SELECT c FROM Student c WHERE username = :username AND password = :password AND isDeleted = 0");
+			query.setParameter("username", username);
+			query.setParameter("password", password);
+			
+			List<Student> listStd = (List<Student>)query.getResultList();
+			System.out.println(listStd);
+			if(listStd == null) {
+				//you are here means company with given name exists so throw exceptions
+				System.out.println("The username or password is incorrect");
+				
+			}
+//			SessionStd Currentstd=new SessionStd();
+			for(Student std: listStd) {
+				SessionStd.setCurrentStd(std);
+				System.out.println("Successfully");
+			}
+			
+		}catch(PersistenceException ex) {
+			ex.getMessage();
+//			throw new SomeThingWentWrongException("Unable to process request, try again later");
+		}finally{
+			em.close();
+		}
+		
 	}
 
 }
