@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="jakarta.persistence.CascadeType"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.EntityManager"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.EntityTransaction"/>
+    <fullyQualifiedTypeName name="com.smartlab.entity.Book"/>
+    <fullyQualifiedTypeName name="com.smartlab.service.LibrarianService"/>
+    <fullyQualifiedTypeName name="com.smartlab.service.LibrarianServiceImpl"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.Query"/>
+    <fullyQualifiedTypeName name="java.util.Set"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="org.hibernate.annotations.DialectOverride.OverridesAnnotation"/>
+    <fullyQualifiedTypeName name="com.mysql.cj.x.protobuf.MysqlxCursor.Fetch"/>
+    <fullyQualifiedTypeName name="com.smartlab.dao.LibrarianDao"/>
+    <fullyQualifiedTypeName name="com.smartlab.dao.LibrarianDaoImpl"/>
+    <fullyQualifiedTypeName name="com.smartlab.dao.StudentDao"/>
+    <fullyQualifiedTypeName name="com.smartlab.dao.StudentDaoImpl"/>
+    <fullyQualifiedTypeName name="java.sql.Date"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
+    <fullyQualifiedTypeName name="com.smartlab.ui.StudentUi"/>
+    <fullyQualifiedTypeName name="com.smartlab.ui.MainLab"/>
+    <fullyQualifiedTypeName name="com.smartlab.entity.Student"/>
+    <fullyQualifiedTypeName name="com.smartlab.entity.SessionStd"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.ManyToMany"/>
+    <fullyQualifiedTypeName name="jakarta.persistence.ManyToOne"/>
+    <fullyQualifiedTypeName name="com.smartlab.ui.LibrarianUi"/>
+</qualifiedTypeNameHistroy>

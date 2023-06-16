@@ -1,0 +1,80 @@
+package com.smartlab.service;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
+
+import com.smartlab.dao.StudentDao;
+import com.smartlab.entity.Book;
+import com.smartlab.entity.Feedback;
+import com.smartlab.entity.Rental;
+import com.smartlab.entity.Student;
+
+public class StudentServiceImpl implements StudentService {
+
+	private StudentDao studentDAO;
+	@Override
+	public Student registerStudent(String studentName, String username, String password) {
+		Student student = new Student(studentName, username, password,null);
+
+        // Save the student in the database using the StudentDAO
+        return studentDAO.save(student);
+	}
+
+	@Override
+	public Student login(String username, String password) {
+		// TODO Auto-generated method stub
+		 Student student = studentDAO.findByUsername(username);
+
+	        // Check if the student exists and the password matches
+	        if (student != null && student.getPassword().equals(password)) {
+	            return student;
+	        }
+
+	        return null;
+	}
+
+	@Override
+	public List<Book> viewAvailableBooks() {
+		// TODO Auto-generated method stub
+		 return studentDAO.findAvailableBooks();
+	}
+
+	@Override
+	public List<Book> searchBooksByCriteria(String criteria) {
+		// TODO Auto-generated method stub
+		 return studentDAO.searchBooksByCriteria(criteria);
+	}
+
+	@Override
+	public Rental rentBook(Student student, Book book) {
+		// TODO Auto-generated method stub
+		
+		Date rentalDate = Date.valueOf(LocalDate.now());
+		Date returnDate=Date.valueOf(LocalDate.now().plusDays(7));
+		
+		 Rental rental = new Rental(student, book, rentalDate,returnDate);
+
+	        // Save the rental in the database using the StudentDAO
+	        return studentDAO.saveRental(rental);
+	}
+
+	@Override
+	public boolean returnBook(Student student, Book book) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Feedback provideFeedback(Student student, Book book, String comment, int rating) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void logout(Student student) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

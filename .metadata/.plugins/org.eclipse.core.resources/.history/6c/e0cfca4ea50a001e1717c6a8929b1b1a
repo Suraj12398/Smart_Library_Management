@@ -1,0 +1,5 @@
+package com.smartlab.entity;
+
+public class Rental {
+
+}

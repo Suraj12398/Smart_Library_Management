@@ -1,0 +1,5 @@
+package com.smartlab.exception;
+
+public class NoRecordFoundException extends Exception {
+
+}

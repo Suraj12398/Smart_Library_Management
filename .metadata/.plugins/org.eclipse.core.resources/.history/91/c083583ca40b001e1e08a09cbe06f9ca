@@ -1,0 +1,22 @@
+package com.smartlab.entity;
+
+public class SessionStd {
+
+	private static Student currentStd;
+
+    public static Student getCurrentStd() {
+        return currentStd;
+    }
+
+    public void setCurrentStd(Student std) {
+        currentStd = std;
+    }
+
+	@Override
+	public String toString() {
+		return "SessionStd [getClass()=" + getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
+	}
+	
+	
+}
