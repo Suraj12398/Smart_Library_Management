@@ -1,0 +1,16 @@
+package com.smartlab.entity;
+
+public class SessionStd {
+
+	private static Student currentUser;
+
+    public static Student getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(Student std) {
+        currentUser = std;
+    }
+	
+	
+}

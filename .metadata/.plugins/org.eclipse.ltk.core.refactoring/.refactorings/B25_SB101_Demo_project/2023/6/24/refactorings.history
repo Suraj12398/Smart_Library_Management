@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;META-INF&apos; to &apos;resources&apos;&#x0A;- Original project: &apos;B25_SB101_Demo_project&apos;&#x0A;- Destination element: &apos;resources&apos;&#x0A;- Original element: &apos;META-INF&apos;" description="Copy folder" element1="src/main/resources/META-INF" files="0" flags="589830" folders="1" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1686737321783" target="/SmartLibraryManagement/src/main/resources" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,61 @@
+package com.smartlab.ui;
+
+import com.smartlab.dao.LibrarianDao;
+import com.smartlab.dao.LibrarianDaoImpl;
+import com.smartlab.entity.Book;
+
+public class MainLab {
+
+	private static void addBook() {
+		// TODO Auto-generated method stub
+		System.out.println("PLease Add Book");
+		Book book=new Book("Club","Man","tan",true, null,null);
+		
+		LibrarianDao ld=new LibrarianDaoImpl();
+		Book t=ld.saveBook(book);
+		if(t==null) {
+			System.out.println("no book added");
+		}else {
+			System.out.println("book added successfull");
+		}
+	}
+	private static void updateBook() {
+		// TODO Auto-generated method stub
+		System.out.println("PLease Add Book");
+		Book book=new Book("5 am Club","Robin","Self help",true, null,null);
+		book.setBookId(4);
+		LibrarianDao ld=new LibrarianDaoImpl();
+		boolean t=ld.updateBook(book);
+		if(t==false) {
+			System.out.println("no book updated");
+		}else {
+			System.out.println("book updated successfull");
+		}
+	}
+	private static void deleteBook() {
+		// TODO Auto-generated method stub
+		int id=5;
+		LibrarianDao ld=new LibrarianDaoImpl();
+		ld.deleteBook(id);
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		addBook();
+		updateBook();
+		deleteBook();
+
+	}
+	
+
+
+
+	
+
+	
+
+	
+
+}

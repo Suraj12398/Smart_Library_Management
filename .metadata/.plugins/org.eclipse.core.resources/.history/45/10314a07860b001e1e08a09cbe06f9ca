@@ -1,0 +1,30 @@
+package com.smartlab.ui;
+
+import java.util.List;
+import java.util.Set;
+
+import com.smartlab.dao.LibrarianDao;
+import com.smartlab.dao.LibrarianDaoImpl;
+import com.smartlab.entity.Book;
+
+public class MainLab {
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		
+
+	}
+	
+	
+
+
+
+	
+
+	
+
+	
+
+}
