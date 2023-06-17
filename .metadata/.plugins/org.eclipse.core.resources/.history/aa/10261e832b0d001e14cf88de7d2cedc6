@@ -1,0 +1,23 @@
+package com.smartlab.dao;
+
+import java.util.List;
+
+import com.masai.exception.SomeThingWentWrongException;
+import com.smartlab.entity.Book;
+import com.smartlab.entity.Feedback;
+import com.smartlab.entity.Rental;
+import com.smartlab.entity.Student;
+
+public interface LibrarianDao {
+//		Librarian save(Librarian librarian);
+//	    Librarian findByUsername(String username);
+	    Book saveBook(Book book)throws SomethingWentWrongException;
+	    boolean updateBook(Book book)throws SomethingWentWrongException;
+	    List<Book> viewBookAvailable()throws SomethingWentWrongException;
+	    List<Rental> findStudentRentals()throws SomethingWentWrongException;
+	    List<Feedback> findBookFeedbacks()throws SomethingWentWrongException;
+		boolean deleteBook(int id)throws SomethingWentWrongException;
+		List<Student> findByUsername(String username)throws SomethingWentWrongException;
+		List<Student> findAllStudent()throws SomethingWentWrongException;
+		boolean deleteStudent(int id)throws SomethingWentWrongException;
+}
