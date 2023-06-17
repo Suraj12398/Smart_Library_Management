@@ -10,10 +10,11 @@ import com.smartlab.entity.Feedback;
 //import com.smartlab.entity.Librarian;
 import com.smartlab.entity.Rental;
 import com.smartlab.entity.Student;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Query;
 
 
@@ -26,7 +27,7 @@ public class LibrarianDaoImpl implements LibrarianDao {
 //	}
 
 	@Override
-	public List<Student> findByUsername(String username) {
+	public List<Student> findByUsername(String username) throws SomethingWentWrongException,NoRecordFoundException {
 		// TODO Auto-generated method stub
 
 		EntityManager em = null;
@@ -37,10 +38,13 @@ public class LibrarianDaoImpl implements LibrarianDao {
 			Query query=em.createQuery("SELECT s From Student s where s.username LIKE :username");
 			query.setParameter("username", "%"+username +"%");
 			stdList= query.getResultList();
+			if(stdList.isEmpty()) {
+				throw new NoRecordFoundException("No Student Found");
+			}
 			EntityTransaction et = em.getTransaction();
-			return stdList;
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+//			return stdList;
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -49,7 +53,7 @@ return stdList;
 	}
 
 	@Override
-	public List<Student> findAllStudent() {
+	public List<Student> findAllStudent() throws SomethingWentWrongException,NoRecordFoundException{
 		// TODO Auto-generated method stub
 
 		EntityManager em = null;
@@ -59,19 +63,23 @@ return stdList;
 			em = EMUtils.getEntityManager();
 			Query query=em.createQuery("SELECT s From Student s");
 			stdList= query.getResultList();
+			
+			if(stdList.isEmpty()) {
+				throw new NoRecordFoundException("No Student Found");
+			}
 			EntityTransaction et = em.getTransaction();
 			return stdList;
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
 
-return stdList;
+//return stdList;
 	}
 	
 	@Override
-	public Book saveBook(Book book) {
+	public Book saveBook(Book book) throws SomethingWentWrongException,NoRecordFoundException{
 		
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -81,9 +89,9 @@ return stdList;
 			et.begin();
 			em.persist(book);
 			et.commit();
-		}catch(PersistenceException ex) {
-			System.out.println("Duplicate entry");
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
+
 		}finally{
 			em.close();
 		}
@@ -93,28 +101,33 @@ return stdList;
 	}
 
 	@Override
-	public boolean updateBook(Book book) {
+	public boolean updateBook(Book book) throws SomethingWentWrongException ,NoRecordFoundException{
 		EntityManager em = null;
 		EntityTransaction et=null;
 		try {
 			em = EMUtils.getEntityManager();
 			Book bookdb=em.find(Book.class, book.getBookId());
 			if(bookdb==null) {
-				System.out.println("Please enter Valid Book details");
+				System.out.println("Please enter Valid Book Id");
 			}
 			else {
 				et = em.getTransaction();
 				et.begin();
-				bookdb.setAuthor(book.getAuthor());
-				bookdb.setGenre(book.getGenre());
-				bookdb.setTitle(book.getTitle());
+			
+					bookdb.setAuthor(book.getAuthor());
+					bookdb.setGenre(book.getGenre());
+					bookdb.setTitle(book.getTitle());
+				
 				bookdb.setAvailability(book.isAvailability());
 				
 				et.commit();
+				System.out.println("Book Updated Successfully");
 			}
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			et.rollback();
+			throw new SomethingWentWrongException("Unable to process request, try again later");
+			
 		}finally{
 			em.close();
 		}
@@ -123,9 +136,34 @@ return stdList;
 		
 		return true;
 	}
+	@Override
+	public boolean deleteStudent(int id) throws SomethingWentWrongException,NoRecordFoundException{
+		// TODO Auto-generated method stub
+		boolean flag = true;
+		EntityManager em = null;
+		try {
+			em = EMUtils.getEntityManager();
+			Student studentDb = em.find(Student.class,id );
+			if(studentDb==null) {
+//				System.out.println("Please enter Valid Book Id");
+				flag=false;
+			}else {
+			EntityTransaction et = em.getTransaction();
+			et.begin();
+			studentDb.setDeleted(true);
+			et.commit();
+			
+			}
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
+		}finally{
+			em.close();
+		}
+		return flag;
+	}
 
 	@Override
-	public boolean deleteBook(int id) {
+	public boolean deleteBook(int id) throws SomethingWentWrongException,NoRecordFoundException{
 		// TODO Auto-generated method stub
 		boolean flag = true;
 		EntityManager em = null;
@@ -142,8 +180,8 @@ return stdList;
 			et.commit();
 			
 			}
-		}catch(PersistenceException ex) {
-				ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -151,7 +189,7 @@ return stdList;
 	}
 
 	@Override
-	public List<Rental> findStudentRentals() {
+	public List<Rental> findStudentRentals() throws SomethingWentWrongException,NoRecordFoundException{
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		List<Rental> rentList=new ArrayList<Rental>();
@@ -160,10 +198,12 @@ return stdList;
 			em = EMUtils.getEntityManager();
 			Query query=em.createQuery("SELECT r From Rental r",Rental.class);
 			rentList= query.getResultList();
+			if(rentList.isEmpty()) {
+				throw new NoRecordFoundException("No Student rentals Found");
+			}
 			
-			
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -173,7 +213,7 @@ return rentList;
 	}
 
 	@Override
-	public List<Feedback> findBookFeedbacks() {
+	public List<Feedback> findBookFeedbacks() throws SomethingWentWrongException,NoRecordFoundException{
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		List<Feedback> feedList=new ArrayList<Feedback>();
@@ -183,9 +223,13 @@ return rentList;
 			Query query=em.createQuery("SELECT f From Feedback f");
 			feedList= query.getResultList();
 //			EntityTransaction et = em.getTransaction();
+			if(feedList.isEmpty()) {
+				throw new NoRecordFoundException("No feedback Found");
+			}
 			
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
+			
 		}finally{
 			em.close();
 		}
@@ -194,7 +238,7 @@ return feedList;
 	}
 
 	@Override
-	public List<Book> viewBookAvailable() {
+	public List<Book> viewBookAvailable() throws SomethingWentWrongException,NoRecordFoundException{
 		
 				EntityManager em = null;
 				List<Book> bookList=new ArrayList<Book>();
@@ -203,10 +247,12 @@ return feedList;
 					em = EMUtils.getEntityManager();
 					Query query=em.createQuery("SELECT b From Book b where b.availability=true");
 					bookList= query.getResultList();
+					if(bookList.isEmpty()) {
+						throw new NoRecordFoundException("No Book Found");
+					}
 					
-					
-				}catch(PersistenceException ex) {
-					ex.printStackTrace();
+				}catch(IllegalArgumentException ex) {
+					throw new SomethingWentWrongException("Unable to process request, try again later");
 				}finally{
 					em.close();
 				}

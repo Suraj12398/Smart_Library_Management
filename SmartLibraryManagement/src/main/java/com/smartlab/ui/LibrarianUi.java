@@ -10,10 +10,12 @@ import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
 import com.smartlab.entity.Rental;
 import com.smartlab.entity.Student;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 public class LibrarianUi {
 
-	private static void addBook(Scanner sc) {
+	private static void addBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 //		System.out.println("Please Add Book");
 		
@@ -44,31 +46,60 @@ public class LibrarianUi {
 			System.out.println("book added successfull");
 		}
 	}
-	private static void updateBook(Scanner sc) {
+	private static void updateBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		System.out.println("PLease Add Book");
-		Book book=new Book("ikigai","Hector Fracia","tan",true, null);
-		book.setBookId(1);
+		System.out.println("Enter Id of Book");
+		int id=sc.nextInt();
+//		sc.next();
+		System.out.println("Enter Book Title");
+		String title=sc.nextLine();
+		sc.next();
+		System.out.println("Enter Book Author Name");
+		String author=sc.nextLine();
+		sc.next();
+		System.out.println("Enter Genre of Book");
+		String genre=sc.nextLine();
+		sc.next();
+		System.out.println("Enter y if Available else Enter Anything");
+		String av=sc.next();
+		sc.next();
+		boolean available=false;
+		if(av.equals("y")) {
+			available=true;
+		}
+		
+		Book book=new Book(title,author,genre,available, null);
+		
+		book.setBookId(id);
 		LibrarianDao ld=new LibrarianDaoImpl();
 		boolean t=ld.updateBook(book);
-		if(t==false) {
-			System.out.println("no book updated");
-		}else {
-			System.out.println("book updated successfull");
-		}
+		
 	}
-	private static void deleteBook(Scanner sc) {
+	private static void deleteBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		int id=1;
+		
+		System.out.println("Enter Id of Book you want to be deleted");
+		int id=sc.nextInt();
+		System.out.println("Are You Sure You want to Delete Your Account");
+		System.out.println("Enter y for confirmation enter n if not want to delete");
+		String cnf=sc.next();
+		if(cnf.equals("y")) {
 		LibrarianDao ld=new LibrarianDaoImpl();
 		if(ld.deleteBook(id)) {
 			System.out.println("Deleted Successfully");
+			LibrarianUi.main(null);
 		}else{
 			System.out.println("Book Not Found");
 		}
-		
+		}else if (cnf.equals("n")) {
+			System.out.println("Thank you so much");
+		}else {
+			System.out.println("Invalid Selection");
+			deleteBook(sc);
+		}
 	}
-	private static void viewList() {
+	
+	private static void viewList() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		
 		LibrarianDao ld=new LibrarianDaoImpl();
@@ -81,9 +112,7 @@ public class LibrarianUi {
 //	
 		for(Book b:bookList) {
 			String str="";
-			
 			StringJoiner joiner = new StringJoiner(", "); 
-
 			b.getFeedbacks().forEach(a -> joiner.add(a.getComment()));
 
 			String feedbacksString = joiner.toString();
@@ -96,7 +125,7 @@ public class LibrarianUi {
 
 	}
 	
-	private static void findRentals() {
+	private static void findRentals() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		LibrarianDao ld=new LibrarianDaoImpl();
 		
@@ -108,30 +137,30 @@ public class LibrarianUi {
 
 //		System.out.println(rentL);
 		for(Rental f:rentL) {
-			st.addRow(" "+f.getRentalId(),f.getStudent().getStudentName(),f.getBook().getTitle()," "+f.getFine()," "+f.getRentalDate()," "+f.getReturnDate());
+			st.addRow(""+f.getRentalId(),f.getStudent().getStudentName(),f.getBook().getTitle(),""+f.getFine(),""+f.getRentalDate(),""+f.getReturnDate());
 //			System.out.println(f.getRentalId()+" "+f.getStudent().getStudentName()+" "+f.getBook().getTitle()+" "+f.getFine()+" "+f.getRentalDate()+" "+f.getReturnDate());
 		}
 		st.print();
 	}
-	private static void findfeedback() {
+	private static void findfeedback() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		LibrarianDao ld=new LibrarianDaoImpl();
 		List<Feedback> feedList=ld.findBookFeedbacks();
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
-		st.setHeaders("Student Name", "Book Title","Feedback","Rating");
+		st.setHeaders("Feedback Id","Student Name", "Book Title","Feedback","Rating");
 
 //		System.out.println(feedList);
 		for(Feedback f:feedList) {
-			st.addRow(f.getStudent().getStudentName(),f.getBook().getTitle(),f.getComment(),f.getRating()+"");
+			st.addRow(f.getFeedbackId()+"",f.getStudent().getStudentName(),f.getBook().getTitle(),f.getComment(),f.getRating()+"");
 //			System.out.println(f.getStudent().getStudentName()+" "+f.getBook().getTitle()+" "+f.getComment()+" "+f.getRating());
 		
 		}
 		st.print();
 		
 	}
-	private static void findStudentbyUsername(Scanner sc) {
+	private static void findStudentbyUsername(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("Enter Username");
 		String username=sc.next();
@@ -139,7 +168,7 @@ public class LibrarianUi {
 		LibrarianDao ld=new LibrarianDaoImpl();
 		List<Student> stdList=ld.findByUsername(username);
 		CommandLineTable st = new CommandLineTable();
-		st.setHeaders("Id","Student Name","Username","Feedback","Rentals");
+		st.setHeaders("Id","Student Name","Username","Feedback","Fine");
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		
@@ -163,13 +192,12 @@ public class LibrarianUi {
 		st.print();
 	}
 	
-	private static void findAllStudent() {
+	private static void findAllStudent() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		
 		LibrarianDao ld=new LibrarianDaoImpl();
 		List<Student> stdList=ld.findAllStudent();
 		CommandLineTable st = new CommandLineTable();
-		st.setHeaders("Id","Student Name","Username","Feedback","Rentals");
+		st.setHeaders("Id","Student Name","Username","Feedback","Fine");
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		
@@ -193,7 +221,22 @@ public class LibrarianUi {
 		st.print();
 		
 	}
-public static void main(String[] args) {
+	
+	
+	
+	private static void deleteStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+		// TODO Auto-generated method stub
+		System.out.println("Enter Id of Student you want to be deleted");
+		int id=sc.nextInt();
+		LibrarianDao ld=new LibrarianDaoImpl();
+		if(ld.deleteStudent(id)) {
+			System.out.println("Deleted Successfully");
+		}else{
+			System.out.println("Student Not Found");
+		}
+		
+	}
+public static void main(String[] args) throws SomethingWentWrongException, NoRecordFoundException {
 	
 	
 //	findStudentbyUsername();
@@ -207,7 +250,7 @@ public static void main(String[] args) {
 		String password=sc.next();
 		if(password.equals("admin")) {
 			System.out.println("Welcome Admin");
-			int choice = 0;
+			String choice = "0";
 			do {
 				System.out.println("1. Add Book");
 				System.out.println("2. Update Book");
@@ -217,41 +260,46 @@ public static void main(String[] args) {
 				System.out.println("6. Show all Feedbacks");
 				System.out.println("7. Show Student By Username");
 				System.out.println("8. Show All Student");
+				System.out.println("9. Delete Student");
 				System.out.println("0. Exit");
 				System.out.print("Enter Selection ");
-				choice = sc.nextInt();
+				choice = sc.next();
 				switch(choice) {
-					case 1:
+					case "1":
 						addBook(sc);
 						break;
-					case 2:
+					case "2":
 						updateBook(sc);
 						break;
-					case 3:
+					case "3":
 						deleteBook(sc);
 						break;
-					case 4:
+					case "4":
 						viewList();
 						break;
-					case 5:
+					case "5":
 						findRentals();
 						break;
-					case 6:
+					case "6":
 						findfeedback();
 						break;
-					case 7:
+					case "7":
 						findStudentbyUsername(sc);
 						break;
-					case 8:
+					case "8":
 						findAllStudent();
 						break;
-					case 0:
+					case "9":
+						deleteStudent(sc);
+						break;
+					case "0":
 						System.out.println("Thanks for using the services");
+						System.exit(0);
 						break;
 					default:
 						System.out.println("Invalid Selection, try again");
 				}
-			}while(choice != 0);
+			}while(choice != "0");
 			sc.close();
 			
 		}else {
@@ -266,6 +314,7 @@ public static void main(String[] args) {
 	
 	
 }
+
 
 
 	

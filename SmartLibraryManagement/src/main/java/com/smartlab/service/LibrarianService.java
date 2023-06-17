@@ -6,6 +6,8 @@ import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
 //import com.smartlab.entity.Librarian;
 import com.smartlab.entity.Rental;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 public interface LibrarianService {
 //		Librarian registerLibrarian(String librarianName, String username, String password);
@@ -16,7 +18,7 @@ public interface LibrarianService {
 	    List<Rental> viewStudentRentals();
 	    List<Feedback> viewBookFeedbacks();
 //	    void logout(Librarian librarian);
-		Book addBook(Book book);
-		boolean removeBook(int id);
-		boolean updateBookInformation(Book book);
+		Book addBook(Book book) throws SomethingWentWrongException, NoRecordFoundException;
+		boolean removeBook(int id) throws SomethingWentWrongException ,NoRecordFoundException;
+		boolean updateBookInformation(Book book) throws SomethingWentWrongException ,NoRecordFoundException;
 }

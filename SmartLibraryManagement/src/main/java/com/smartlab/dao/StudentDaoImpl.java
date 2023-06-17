@@ -10,6 +10,8 @@ import com.smartlab.entity.Feedback;
 import com.smartlab.entity.Rental;
 import com.smartlab.entity.SessionStd;
 import com.smartlab.entity.Student;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -45,7 +47,7 @@ public class StudentDaoImpl implements StudentDao {
 //	}
 
 	@Override
-	public List<Book> findAvailableBooks() {
+	public List<Book> findAvailableBooks() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		LibrarianDao ld= new LibrarianDaoImpl();
 		return ld.viewBookAvailable();
@@ -77,7 +79,7 @@ public Book findBookById(int id) {
 	
 	
 	@Override
-	public List<Book> searchBooksByGenre(String genre) {
+	public List<Book> searchBooksByGenre(String genre)throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 
 		EntityManager em = null;
@@ -88,6 +90,10 @@ public Book findBookById(int id) {
 			Query query=em.createQuery("SELECT b From Book b where b.genre LIKE :genre");
 			query.setParameter("genre", "%"+genre +"%");
 			bookList= query.getResultList();
+			
+			if(bookList.isEmpty()) {
+				throw new NoRecordFoundException("No Book Found");
+			}
 			EntityTransaction et = em.getTransaction();
 			
 		}catch(PersistenceException ex) {
@@ -99,7 +105,7 @@ public Book findBookById(int id) {
 return bookList;
 	}
 	@Override
-	public List<Book> searchBooksByTitle(String title) {
+	public List<Book> searchBooksByTitle(String title) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 
 		EntityManager em = null;
@@ -121,7 +127,7 @@ return bookList;
 return bookList;
 	}
 	@Override
-	public void saveRental(Rental rental) {
+	public void saveRental(Rental rental) throws SomethingWentWrongException, NoRecordFoundException{
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 				EntityManager em = null;
@@ -143,7 +149,7 @@ return bookList;
 	}
 
 	@Override
-	public void updateRental(Rental rental) {
+	public void updateRental(Rental rental)throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -179,7 +185,7 @@ return bookList;
 	
 
 	@Override
-	public void saveFeedback(Feedback feedback) {
+	public void saveFeedback(Feedback feedback) throws SomethingWentWrongException, NoRecordFoundException{
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -200,7 +206,7 @@ return bookList;
 	}
 
 	@Override
-	public void login(String username,String password) {
+	public void login(String username,String password) throws SomethingWentWrongException, NoRecordFoundException{
 		EntityManager em = null;
 		try {
 			em = EMUtils.getEntityManager();
@@ -210,21 +216,21 @@ return bookList;
 			query.setParameter("password", password);
 			
 			List<Student> listStd = (List<Student>)query.getResultList();
-			System.out.println(listStd);
+//			System.out.println(listStd);
 			if(listStd == null) {
-				//you are here means company with given name exists so throw exceptions
-				System.out.println("The username or password is incorrect");
+				
+				System.out.println("The username or password is Incorrect");
 				
 			}
-//			SessionStd Currentstd=new SessionStd();
+
 			for(Student std: listStd) {
 				SessionStd.setCurrentStd(std);
-				System.out.println("Successfully");
+				System.out.println("Log in Successfull");
 			}
 			
 		}catch(PersistenceException ex) {
 			ex.getMessage();
-//			throw new SomeThingWentWrongException("Unable to process request, try again later");
+
 		}finally{
 			em.close();
 		}

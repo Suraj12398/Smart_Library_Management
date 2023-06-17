@@ -5,37 +5,40 @@ import java.util.Scanner;
 
 import com.smartlab.dao.StudentDao;
 import com.smartlab.dao.StudentDaoImpl;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 public class MainLab {
 
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		
 		
 		
 		Scanner sc = new Scanner(System.in);
-    	int choice = 0;
+    	String choice = "0";
     	do {
     		System.out.println("1. Admin Side");
     		System.out.println("2. Student Side");
     		System.out.println("0. Exit");
     		System.out.print("Enter Selection ");
-    		choice = sc.nextInt();
+    		choice = sc.next();
     		switch(choice) {
-    			case 1:
+    			case "1":
     				LibrarianUi.main(args);
     				break;
-    			case 2:
+    			case "2":
     				StudentUi.main(args);
     				break;
-    			case 0:
+    			case "0":
     				System.out.println("Thanks for using the services");
+    				System.exit(0);
     				break;
     			default:
     				System.out.println("Invalid Selection, try again");
     		}
-    	}while(choice != 0);
+    	}while(choice != "0");
     	sc.close();
     }
 

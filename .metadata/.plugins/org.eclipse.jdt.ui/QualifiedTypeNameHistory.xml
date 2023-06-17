@@ -20,11 +20,13 @@
     <fullyQualifiedTypeName name="java.sql.Date"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="java.util.concurrent.TimeUnit"/>
-    <fullyQualifiedTypeName name="com.smartlab.ui.StudentUi"/>
     <fullyQualifiedTypeName name="com.smartlab.ui.MainLab"/>
     <fullyQualifiedTypeName name="com.smartlab.entity.Student"/>
-    <fullyQualifiedTypeName name="com.smartlab.entity.SessionStd"/>
     <fullyQualifiedTypeName name="jakarta.persistence.ManyToMany"/>
     <fullyQualifiedTypeName name="jakarta.persistence.ManyToOne"/>
+    <fullyQualifiedTypeName name="com.smartlab.entity.SessionStd"/>
+    <fullyQualifiedTypeName name="com.smartlab.ui.StudentUi"/>
     <fullyQualifiedTypeName name="com.smartlab.ui.LibrarianUi"/>
+    <fullyQualifiedTypeName name="java.lang.Exception"/>
+    <fullyQualifiedTypeName name="com.smartlab.exception.NoRecordFoundException"/>
 </qualifiedTypeNameHistroy>

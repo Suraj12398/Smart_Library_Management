@@ -8,6 +8,8 @@ import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
 //import com.smartlab.entity.Librarian;
 import com.smartlab.entity.Rental;
+import com.smartlab.exception.NoRecordFoundException;
+import com.smartlab.exception.SomethingWentWrongException;
 
 public class LibrarianServiceImpl implements LibrarianService {
 
@@ -27,19 +29,19 @@ public class LibrarianServiceImpl implements LibrarianService {
 //	}
 
 	@Override
-	public Book addBook(Book book) {
+	public Book addBook(Book book) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		return ld.saveBook(book);
 	}
 
 	@Override
-	public boolean updateBookInformation(Book book) {
+	public boolean updateBookInformation(Book book) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		return ld.updateBook(book);
 	}
 
 	@Override
-	public boolean removeBook(int id) {
+	public boolean removeBook(int id) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		return ld.deleteBook(id);
 	}
