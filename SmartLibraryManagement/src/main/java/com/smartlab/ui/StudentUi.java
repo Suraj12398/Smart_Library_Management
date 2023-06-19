@@ -136,6 +136,68 @@ public class StudentUi {
 		}
 		
 	}
+	private static void viewProfile() throws SomethingWentWrongException, NoRecordFoundException {
+		// TODO Auto-generated method stub
+		StudentDao ls=new StudentDaoImpl();
+		System.out.println(SessionStd.getCurrentStd().getStudentId());
+		System.out.println(SessionStd.getCurrentStd().getStudentName());
+		System.out.println(SessionStd.getCurrentStd().getUsername());
+		System.out.println(SessionStd.getCurrentStd().getPassword());
+		System.out.println("\n");
+		System.out.println("Your Rentals:-");
+		SessionStd.getCurrentStd().getRentals().forEach(a->System.out.println(a.getRentalId()+" - "+a.getBook().getTitle()+" - "+a.getRentalDate()+" - "+a.getReturnDate()));
+		System.out.println("Your feedbacks:-");
+		System.out.println("\n");
+		SessionStd.getCurrentStd().getFeedbacks().forEach(a->System.out.println(a.getBook().getTitle()+" - "+a.getComment()+" - "+a.getRating()));
+		System.out.println("\n");
+		System.out.println("Your Wallet Balance is : "+SessionStd.getCurrentStd().getWallet());
+	
+
+	
+	Scanner sc= new Scanner(System.in);
+	System.out.println("Welcome");
+	String choice = "0";
+	do {
+		System.out.println("Profile Setting");
+		System.out.println("Enter");
+		System.out.println("1.Change Profile name  2.Add Wallet Balance  3.Change Password 0.Main Menu" );
+		
+		
+		choice = sc.next();
+		switch(choice) {
+			case "1":
+				System.out.println("Enter new Profile name");
+				String stdName=sc.nextLine();
+				ls.updateName(stdName);
+				viewProfile();
+				break;
+			case "2":
+				System.out.println("Enter Adding Wallet");
+				long stdBalance=sc.nextLong();
+				ls.updateBalance(stdBalance);
+				viewProfile();
+				break;
+			case "3":
+				System.out.println("Enter new Password");
+				String stdPassword=sc.nextLine();
+				ls.changePassword(stdPassword);
+				viewProfile();
+				break;
+			case "4":
+				StudentUi.main(null);
+				break;
+			
+			case "0":
+				System.out.println("Thanks for using the services");
+				break;
+			default:
+				System.out.println("Invalid Selection, try again");
+		}
+	}while(choice != "0");
+	sc.close();
+	
+	
+	}
 	private static void loginStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 //		Scanner sc= new Scanner(System.in);
@@ -163,7 +225,7 @@ public class StudentUi {
 			System.out.println("5. Return Book");
 			System.out.println("6. Give Feedback for Book");
 			System.out.println("7. Delete Account");
-//			System.out.println("8. View List of Book");
+			System.out.println("8. Profile Setting");
 			System.out.println("0. Exit");
 			System.out.print("Enter Selection ");
 			choice = sc.next();
@@ -189,9 +251,9 @@ public class StudentUi {
 				case "7":
 					deleteStudent(sc);
 					break;
-//				case 8:
-//					viewList();
-//					break;
+				case "8":
+					viewProfile();
+					break;
 				case "0":
 					System.out.println("Thanks for using the services");
 					System.exit(0);
@@ -203,6 +265,8 @@ public class StudentUi {
 		sc.close();
 		
 	}
+	
+
 	private static void deleteStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		System.out.println("Are You Sure You want to Delete Your Account");
@@ -251,10 +315,10 @@ public class StudentUi {
 //		int idb=1;
 		StudentDao st=new StudentDaoImpl();
 		Book book=st.findBookById(idb);
-
 		Rental rental=new Rental(SessionStd.getCurrentStd(),book,Date.valueOf(LocalDate.now()),Date.valueOf("2023-07-23"));
 		
 //		Rental rental=new Rental(null,book,Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now()));
+		
 		rental.setRentalId(id);
 		st.updateRental(rental);
 		
@@ -276,32 +340,32 @@ public class StudentUi {
 public static void main(String[] args) throws SomethingWentWrongException,NoRecordFoundException {
 	Scanner sc= new Scanner(System.in);
 	System.out.println("Welcome");
-	int choice = 0;
+	String choice = "0";
 	do {
 		System.out.println("1. Sign In");
 		System.out.println("2. Register new Student");
 		System.out.println("3. Back to Main Menu");
 		System.out.println("0. Exit");
 		System.out.print("Enter Selection ");
-		choice = sc.nextInt();
+		choice = sc.next();
 		switch(choice) {
-			case 1:
+			case "1":
 				loginStudent(sc);
 				break;
-			case 2:
+			case "2":
 				registerStudent(sc);
 				break;
-			case 3:
+			case "3":
 				MainLab.main(null);
 				break;
 			
-			case 0:
+			case "0":
 				System.out.println("Thanks for using the services");
 				break;
 			default:
 				System.out.println("Invalid Selection, try again");
 		}
-	}while(choice != 0);
+	}while(choice != "0");
 	sc.close();
 //			loginStudent(sc);
 			

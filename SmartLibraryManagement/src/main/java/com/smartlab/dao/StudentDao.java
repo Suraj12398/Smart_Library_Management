@@ -1,6 +1,7 @@
 package com.smartlab.dao;
 
 import java.util.List;
+import java.util.Scanner;
 
 import com.smartlab.entity.Book;
 import com.smartlab.entity.Feedback;
@@ -20,4 +21,7 @@ public interface StudentDao {
 	List<Book> searchBooksByTitle(String title) throws SomethingWentWrongException, NoRecordFoundException;
 	void login(String username, String password) throws SomethingWentWrongException, NoRecordFoundException;
 	Book findBookById(int id) throws SomethingWentWrongException, NoRecordFoundException;
+	void changePassword(String stdPassword) throws SomethingWentWrongException, NoRecordFoundException;
+	void updateBalance(long stdBalance) throws SomethingWentWrongException, NoRecordFoundException;
+	void updateName(String stdName) throws SomethingWentWrongException, NoRecordFoundException;
 }

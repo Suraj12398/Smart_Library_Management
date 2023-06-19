@@ -33,8 +33,21 @@ public class Student {
     @Column(name = "isDeleted",columnDefinition = "boolean default false")
     private boolean isDeleted;
 
+    private long wallet;
+    
+    public long getWallet() {
+		return wallet;
+	}
 
-    // One-to-Many relationship with Rental
+
+
+	public void setWallet(long wallet) {
+		this.wallet = wallet;
+	}
+
+
+
+	// One-to-Many relationship with Rental
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Rental> rentals;
 

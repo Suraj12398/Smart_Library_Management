@@ -3,6 +3,7 @@ package com.smartlab.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import com.smartlab.entity.Book;
@@ -169,8 +170,11 @@ return bookList;
 				System.out.println(TimeUnit.MILLISECONDS.toDays(differenceInReturn));
 				if(TimeUnit.MILLISECONDS.toDays(differenceInReturn)>7) {
 					rent.setFine((TimeUnit.MILLISECONDS.toDays(differenceInReturn)/7)*5);
+					rent.getStudent().setWallet(rent.getStudent().getWallet()-((TimeUnit.MILLISECONDS.toDays(differenceInReturn)/7)*5));
+					
 				}else {
 					rent.setFine(0);
+					
 				}
 				et.commit();
 			}
@@ -181,9 +185,89 @@ return bookList;
 			em.close();
 		}
 	}
+	@Override
+	public void updateName(String stdName)throws SomethingWentWrongException, NoRecordFoundException {
+		// TODO Auto-generated method stub
+		EntityManager em = null;
+		EntityTransaction et=null;
+		Student std=SessionStd.getCurrentStd();
+		try {
+			em = EMUtils.getEntityManager();
+			Student stddb=em.find(Student.class, std.getStudentId());
+			
+			
+			
+				et = em.getTransaction();
+				et.begin();
 
+				stddb.setStudentName(stdName);
+				
+				
+				et.commit();
+			
+			
+		}catch(PersistenceException ex) {
+			ex.getMessage();
+		}finally{
+			em.close();
+		}
+	}
+	@Override
+	public void updateBalance(long balance)throws SomethingWentWrongException, NoRecordFoundException {
+		// TODO Auto-generated method stub
+		EntityManager em = null;
+		EntityTransaction et=null;
+		Student std=SessionStd.getCurrentStd();
+		try {
+			em = EMUtils.getEntityManager();
+			Student stddb=em.find(Student.class, std.getStudentId());
+			
+			
+			
+				et = em.getTransaction();
+				et.begin();
+
+				stddb.setWallet(balance);
+				
+				
+				et.commit();
+			
+			
+		}catch(PersistenceException ex) {
+			ex.getMessage();
+		}finally{
+			em.close();
+		}
+	}
 	
+	@Override
+	public void changePassword(String stdPassword)throws SomethingWentWrongException, NoRecordFoundException {
+		// TODO Auto-generated method stub
+		EntityManager em = null;
+		EntityTransaction et=null;
+		Student std=SessionStd.getCurrentStd();
+		try {
+			em = EMUtils.getEntityManager();
+			Student stddb=em.find(Student.class, std.getStudentId());
+			
+			
+			
+				et = em.getTransaction();
+				et.begin();
 
+				stddb.setPassword(stdPassword);
+				
+				
+				et.commit();
+			
+			
+		}catch(PersistenceException ex) {
+			ex.getMessage();
+		}finally{
+			em.close();
+		}
+	}
+	
 	@Override
 	public void saveFeedback(Feedback feedback) throws SomethingWentWrongException, NoRecordFoundException{
 		// TODO Auto-generated method stub
