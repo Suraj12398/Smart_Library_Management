@@ -261,6 +261,7 @@ public static void main(String[] args) throws SomethingWentWrongException, NoRec
 				System.out.println("7. Show Student By Username");
 				System.out.println("8. Show All Student");
 				System.out.println("9. Delete Student");
+				System.out.println("10. Back");
 				System.out.println("0. Exit");
 				System.out.print("Enter Selection ");
 				choice = sc.next();
@@ -291,6 +292,9 @@ public static void main(String[] args) throws SomethingWentWrongException, NoRec
 						break;
 					case "9":
 						deleteStudent(sc);
+						break;
+					case "10":
+						MainLab.main(null);
 						break;
 					case "0":
 						System.out.println("Thanks for using the services");
