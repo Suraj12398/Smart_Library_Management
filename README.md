@@ -49,10 +49,10 @@ The Smart Library Management System is a Java-based software solution that provi
 
 
 ### Student Menu:
- <img align="center" src="https://drive.google.com/uc?export=view&id=1aBE3Ufm_RVp3Xkm9V6SyLCiiY2L3Cbu2" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
+ <img align="center" src="https://drive.google.com/uc?export=view&id=1cUOhVNQJg5UWGhbYR-zfFjdSybrdgdBH" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 ### Student Profile Setting
- <img align="center" src="https://drive.google.com/uc?export=view&id=1aBE3Ufm_RVp3Xkm9V6SyLCiiY2L3Cbu2" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
+ <img align="center" src="https://drive.google.com/uc?export=view&id=1cUOhVNQJg5UWGhbYR-zfFjdSybrdgdBH" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 
 ## Installation
