@@ -22,7 +22,7 @@ import jakarta.persistence.Query;
 public class StudentDaoImpl implements StudentDao {
 
 	@Override
-	public Student save(Student student) {
+	public Student save(Student student) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -32,9 +32,8 @@ public class StudentDaoImpl implements StudentDao {
 			et.begin();
 			em.persist(student);
 			et.commit();
-		}catch(PersistenceException ex) {
-			System.out.println("Duplicate entry");
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -56,7 +55,7 @@ public class StudentDaoImpl implements StudentDao {
 	
 	
 	@Override
-public Book findBookById(int id) {
+public Book findBookById(int id) throws NoRecordFoundException {
 		EntityManager em = null;
 //		EntityTransaction et=null;
 		try {
@@ -69,8 +68,8 @@ public Book findBookById(int id) {
 				return bookdb;
 			}
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new NoRecordFoundException("No Student Found");
 		}finally{
 			em.close();
 		}
@@ -89,7 +88,7 @@ public Book findBookById(int id) {
 			
 			em = EMUtils.getEntityManager();
 			Query query=em.createQuery("SELECT b From Book b where b.genre LIKE :genre");
-			query.setParameter("genre", "%"+genre +"%");
+			query.setParameter("genre", "%"+genre+"%");
 			bookList= query.getResultList();
 			
 			if(bookList.isEmpty()) {
@@ -97,8 +96,8 @@ public Book findBookById(int id) {
 			}
 			EntityTransaction et = em.getTransaction();
 			
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -114,13 +113,13 @@ return bookList;
 		try {
 			
 			em = EMUtils.getEntityManager();
-			Query query=em.createQuery("SELECT b From Book b where b.title LIKE :title");
+			Query query=em.createQuery("SELECT b From Book b where b.title LIKE :title AND ");
 			query.setParameter("title", "%"+title+"%");
 			bookList= query.getResultList();
 			EntityTransaction et = em.getTransaction();
 			
-		}catch(PersistenceException ex) {
-			ex.printStackTrace();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -179,8 +178,8 @@ return bookList;
 				et.commit();
 			}
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -206,8 +205,8 @@ return bookList;
 				et.commit();
 			
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -233,8 +232,8 @@ return bookList;
 				et.commit();
 			
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -261,8 +260,8 @@ return bookList;
 				et.commit();
 			
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
@@ -312,9 +311,8 @@ return bookList;
 				System.out.println("Log in Successfull");
 			}
 			
-		}catch(PersistenceException ex) {
-			ex.getMessage();
-
+		}catch(IllegalArgumentException ex) {
+			throw new SomethingWentWrongException("Unable to process request, try again later");
 		}finally{
 			em.close();
 		}
