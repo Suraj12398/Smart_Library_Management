@@ -24,15 +24,16 @@ public class StudentUi {
 	
 	private static void availableBook() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
+		Scanner sc=new Scanner(System.in);
 		StudentDao sd=new StudentDaoImpl();
 		
-		List<Book> bookList=sd.findAvailableBooks();;
+		List<Book> bookList=sd.findAvailableBooks();
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		st.setHeaders("Id", "Title", "Author","Genre","Feedbacks");
 
-//	
+
 		for(Book b:bookList) {
 			String str="";
 			StringJoiner joiner = new StringJoiner(", "); 
@@ -44,7 +45,9 @@ public class StudentUi {
 			
 			}
 		st.print();
-		System.out.println(); 
+		System.out.println();
+		
+	
 		
 	}
 	
@@ -58,8 +61,6 @@ public class StudentUi {
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		st.setHeaders("Id", "Title", "Author","Genre","Feedbacks");
-
-		st.print();
 		System.out.println(); 
 		if(bookList.size()==0) {
 			System.out.println("No Book Available");
@@ -75,7 +76,7 @@ public class StudentUi {
 				
 				}	
 		}
-		
+		st.print();
 		
 	}
 	private static void searchByTitle(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
@@ -90,7 +91,7 @@ public class StudentUi {
 		System.out.println("\n");
 		st.setHeaders("Id", "Title", "Author","Genre","Feedbacks");
 
-		st.print();
+		
 		System.out.println(); 
 		if(bookList.size()==0) {
 			System.out.println("No Book Available");
@@ -106,9 +107,14 @@ public class StudentUi {
 				
 				}	
 			}
+		st.print();
+		
+		
+//		Scanner sc= new Scanner(System.in);
+		
 		
 	}
-	private static void registerStudent(Scanner sc) {
+	private static void registerStudent(Scanner sc) throws SomethingWentWrongException {
 		// TODO Auto-generated method stub
 		System.out.println("Please Add Student");
 //		Student std1=new Student("Suraj Deosarkar","sd","sd",new ArrayList<Rental>());
@@ -139,16 +145,26 @@ public class StudentUi {
 	private static void viewProfile() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		StudentDao ls=new StudentDaoImpl();
-		System.out.println(SessionStd.getCurrentStd().getStudentId());
-		System.out.println(SessionStd.getCurrentStd().getStudentName());
-		System.out.println(SessionStd.getCurrentStd().getUsername());
-		System.out.println(SessionStd.getCurrentStd().getPassword());
+		CommandLineTable st = new CommandLineTable();
+		st.setShowVerticalLines(true);
+		CommandLineTable st1 = new CommandLineTable();
+		st.setShowVerticalLines(true);
+		CommandLineTable st2 = new CommandLineTable();
+		st.setShowVerticalLines(true);
+		System.out.println("\n");
+		st.setHeaders("Id", "Name","Username","Password");
+		st.addRow(""+SessionStd.getCurrentStd().getStudentId(),SessionStd.getCurrentStd().getStudentName(),SessionStd.getCurrentStd().getPassword());
+		
 		System.out.println("\n");
 		System.out.println("Your Rentals:-");
-		SessionStd.getCurrentStd().getRentals().forEach(a->System.out.println(a.getRentalId()+" - "+a.getBook().getTitle()+" - "+a.getRentalDate()+" - "+a.getReturnDate()));
+		st1.setHeaders("Id","Book","Rental Date","Return Date");
+		SessionStd.getCurrentStd().getRentals().forEach(a->st1.addRow(""+a.getRentalId(),a.getBook().getTitle(),""+a.getRentalDate(),""+a.getReturnDate()));
+		st1.print();
 		System.out.println("Your feedbacks:-");
 		System.out.println("\n");
-		SessionStd.getCurrentStd().getFeedbacks().forEach(a->System.out.println(a.getBook().getTitle()+" - "+a.getComment()+" - "+a.getRating()));
+		st2.setHeaders("Id","Book","Comment","Rating");
+		SessionStd.getCurrentStd().getFeedbacks().forEach(a->st2.addRow(""+a.getFeedbackId(),a.getBook().getTitle(),a.getComment(),""+a.getRating()));
+		st2.print();
 		System.out.println("\n");
 		System.out.println("Your Wallet Balance is : "+SessionStd.getCurrentStd().getWallet());
 	
@@ -169,26 +185,28 @@ public class StudentUi {
 				System.out.println("Enter new Profile name");
 				String stdName=sc.nextLine();
 				ls.updateName(stdName);
-				viewProfile();
+				StudentUi.main(null);
 				break;
 			case "2":
 				System.out.println("Enter Adding Wallet");
 				long stdBalance=sc.nextLong();
 				ls.updateBalance(stdBalance);
-				viewProfile();
+				StudentUi.main(null);
 				break;
 			case "3":
 				System.out.println("Enter new Password");
 				String stdPassword=sc.nextLine();
 				ls.changePassword(stdPassword);
-				viewProfile();
+				StudentUi.main(null);
 				break;
 			case "4":
+				System.out.println("Thanks for using the services");
 				StudentUi.main(null);
 				break;
 			
 			case "0":
 				System.out.println("Thanks for using the services");
+				System.exit(0);
 				break;
 			default:
 				System.out.println("Invalid Selection, try again");
@@ -226,6 +244,7 @@ public class StudentUi {
 			System.out.println("6. Give Feedback for Book");
 			System.out.println("7. Delete Account");
 			System.out.println("8. Profile Setting");
+			System.out.println("9. Back");
 			System.out.println("0. Exit");
 			System.out.print("Enter Selection ");
 			choice = sc.next();
@@ -253,6 +272,9 @@ public class StudentUi {
 					break;
 				case "8":
 					viewProfile();
+					break;
+				case "9":
+					MainLab.main(null);
 					break;
 				case "0":
 					System.out.println("Thanks for using the services");
@@ -327,12 +349,16 @@ public class StudentUi {
 	private static void giveFeedback(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		StudentDao ls=new StudentDaoImpl();
-
+		System.out.println("Enter Book Id");
 		int id=sc.nextInt();
 		StudentDao st=new StudentDaoImpl();
 		Book book=st.findBookById(id);
-		String msg="well done";
-		Feedback feedback=new Feedback(SessionStd.getCurrentStd(),book,msg,10);
+		System.out.println("Give Feedback");
+		String msg=sc.nextLine();
+		sc.next();
+		System.out.println("Enter Book Rating");
+		int rating=sc.nextInt();
+		Feedback feedback=new Feedback(SessionStd.getCurrentStd(),book,msg,rating);
 		st.saveFeedback(feedback);
 	}
 	
@@ -358,7 +384,6 @@ public static void main(String[] args) throws SomethingWentWrongException,NoReco
 			case "3":
 				MainLab.main(null);
 				break;
-			
 			case "0":
 				System.out.println("Thanks for using the services");
 				break;
