@@ -38,7 +38,7 @@ The Smart Library Management System is a Java-based software solution that provi
 
 ### ER Diagram
 
- <img align="center" src="https://drive.google.com/uc?export=view&id=1aBE3Ufm_RVp3Xkm9V6SyLCiiY2L3Cbu2" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
+ <img align="center" src="https://drive.google.com/uc?export=view&id=1ZkN1zC09ssFwA5HGxvugo70fMtxUNMHX" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 
 ### Home Page:
