@@ -1,6 +1,6 @@
 # resolute-shock-3974
 
- <img align="center" src="https://drive.google.com/uc?export=view&id=1J7XYh86ccRqk6jFa6VumaxpUpNuORnxH" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
+ <img align="center" src="https://drive.google.com/uc?export=view&id=1k184wZfC945klpwX1UATW6H-DR3VhnRW" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 ##Library Management System
 
