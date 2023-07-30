@@ -60,7 +60,7 @@ The Smart Library Management System is a Java-based software solution that provi
 
 ## Installation
 
-#### To run the Recipe Management System locally, please follow these steps:
+#### To run the Smart Library Management System locally, please follow these steps:
 
 #### 1. https://github.com/Suraj12398/resolute-shock-3974.git
 #### 2. Update the dependencies in the 'POM.xml' file to ensure all required libraries are correctly included.
