@@ -101,11 +101,5 @@ public class Rental {
 		this.returnDate = returnDate;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Rental [rentalId=" + rentalId + ", student=" + student + ", book=" + book + ", rentalDate=" + rentalDate
-//				+ ", returnDate=" + returnDate + "]";
-//	}
-
   
 }

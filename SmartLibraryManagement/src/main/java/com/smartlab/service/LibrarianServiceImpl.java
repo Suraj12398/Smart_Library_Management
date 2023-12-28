@@ -49,13 +49,19 @@ public class LibrarianServiceImpl implements LibrarianService {
 	@Override
 	public List<Rental> viewStudentRentals() {
 		// TODO Auto-generated method stub
+		try {
+			return ld.findStudentRentals();
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@Override
-	public List<Feedback> viewBookFeedbacks() {
+	public List<Feedback> viewBookFeedbacks() throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
-		return null;
+		return ld.findBookFeedbacks();
 	}
 
 	

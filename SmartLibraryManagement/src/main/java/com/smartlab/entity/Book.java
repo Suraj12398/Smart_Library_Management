@@ -37,12 +37,6 @@ public class Book {
     
     
 
-    // Many-to-One relationship with Librarian
-//    @ManyToOne
-//    @JoinColumn(name = "librarian_id")
-//    private Librarian librarian;
-
-    // Many-to-One relationship with Feedback
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Feedback> feedbacks;
 
@@ -58,7 +52,7 @@ public class Book {
 		this.author = author;
 		this.genre = genre;
 		this.availability = availability;
-//		this.librarian = librarian;
+
 		this.feedbacks = feedbacks;
 	}
 
@@ -102,13 +96,6 @@ public class Book {
 		this.availability = availability;
 	}
 
-//	public Librarian getLibrarian() {
-//		return librarian;
-//	}
-//
-//	public void setLibrarian(Librarian librarian) {
-//		this.librarian = librarian;
-//	}
 
 	public List<Feedback> getFeedbacks() {
 		return feedbacks;

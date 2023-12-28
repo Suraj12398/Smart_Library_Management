@@ -12,41 +12,39 @@ import com.smartlab.entity.Rental;
 import com.smartlab.entity.Student;
 import com.smartlab.exception.NoRecordFoundException;
 import com.smartlab.exception.SomethingWentWrongException;
+import com.smartlab.service.LibrarianService;
+import com.smartlab.service.LibrarianServiceImpl;
 
 public class LibrarianUi {
 
-	private static void addBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
-		// TODO Auto-generated method stub
-//		System.out.println("Please Add Book");
-		
+	private static void addBook(Scanner sc)  {
+		// TODO Auto-generated method stub		
 		System.out.println("Enter Book Title");
 		String title=sc.next();
 		System.out.println("Enter Book Author");
 		String author=sc.next();
 		System.out.println("Enter Genre of Book");
-		String genre=sc.next();
-//		
-//		
+		String genre=sc.next();	
 		Book book=new Book(title,author,genre,true, null);
+		
+//		*******Dummy Data **********
 //		Book book=new Book("5 am Club","Robin Sharma","Self help",true, null);
 //		Book book1=new Book("ikigai","Hector Fracia","self help",true, null);
 //		Book book2=new Book("fight club","remo wadro","adventures",true, null);
 //		Book book3=new Book("The Myth","harry compo","fantacy",true, null);
 //		Book book4=new Book("jersey","MS Dhoni","adventures",true, null);
-		LibrarianDao ld=new LibrarianDaoImpl();
-		Book t=ld.saveBook(book);
-		ld.saveBook(book);
-//		ld.saveBook(book1);
-//		ld.saveBook(book2);
-//		ld.saveBook(book3);
-//		ld.saveBook(book4);
-		if(t==null) {
-			System.out.println("no book added");
-		}else {
-			System.out.println("book added successfull");
+		LibrarianService ls=new LibrarianServiceImpl();
+		
+		try {
+			ls.addBook(book);
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+
 	}
-	private static void updateBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void updateBook(Scanner sc)  {
 		// TODO Auto-generated method stub
 		System.out.println("Enter Id of Book");
 		int id=sc.nextInt();
@@ -71,11 +69,18 @@ public class LibrarianUi {
 		Book book=new Book(title,author,genre,available, null);
 		
 		book.setBookId(id);
-		LibrarianDao ld=new LibrarianDaoImpl();
-		boolean t=ld.updateBook(book);
+		LibrarianService ls=new LibrarianServiceImpl();
+		
+		
+		try {
+			boolean t=ls.updateBookInformation(book);
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
-	private static void deleteBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void deleteBook(Scanner sc) {
 		// TODO Auto-generated method stub
 		
 		System.out.println("Enter Id of Book you want to be deleted");
@@ -85,11 +90,16 @@ public class LibrarianUi {
 		String cnf=sc.next();
 		if(cnf.equals("y")) {
 		LibrarianDao ld=new LibrarianDaoImpl();
-		if(ld.deleteBook(id)) {
-			System.out.println("Deleted Successfully");
-			LibrarianUi.main(null);
-		}else{
-			System.out.println("Book Not Found");
+		try {
+			if(ld.deleteBook(id)) {
+				System.out.println("Deleted Successfully");
+				LibrarianUi.main(null);
+			}else{
+				System.out.println("Book Not Found");
+			}
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		}else if (cnf.equals("n")) {
 			System.out.println("Thank you so much");
@@ -99,11 +109,17 @@ public class LibrarianUi {
 		}
 	}
 	
-	private static void viewList() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void viewList() {
 		// TODO Auto-generated method stub
 		
 		LibrarianDao ld=new LibrarianDaoImpl();
-		List<Book> bookList=ld.viewBookAvailable();
+		List<Book> bookList = null;
+		try {
+			bookList = ld.viewBookAvailable();
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
@@ -125,48 +141,59 @@ public class LibrarianUi {
 
 	}
 	
-	private static void findRentals() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void findRentals() {
 		// TODO Auto-generated method stub
 		LibrarianDao ld=new LibrarianDaoImpl();
 		
-		List<Rental> rentL=ld.findStudentRentals();
+		List<Rental> rentL = null;
+		try {
+			rentL = ld.findStudentRentals();
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		st.setHeaders("Id", "Student Name", "Book Title","Fine","Rental Date","Return Date");
-
-//		System.out.println(rentL);
 		for(Rental f:rentL) {
 			st.addRow(""+f.getRentalId(),f.getStudent().getStudentName(),f.getBook().getTitle(),""+f.getFine(),""+f.getRentalDate(),""+f.getReturnDate());
-//			System.out.println(f.getRentalId()+" "+f.getStudent().getStudentName()+" "+f.getBook().getTitle()+" "+f.getFine()+" "+f.getRentalDate()+" "+f.getReturnDate());
 		}
 		st.print();
 	}
-	private static void findfeedback() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void findfeedback(){
 		// TODO Auto-generated method stub
 		LibrarianDao ld=new LibrarianDaoImpl();
-		List<Feedback> feedList=ld.findBookFeedbacks();
+		List<Feedback> feedList = null;
+		try {
+			feedList = ld.findBookFeedbacks();
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
 		st.setHeaders("Feedback Id","Student Name", "Book Title","Feedback","Rating");
-
-//		System.out.println(feedList);
 		for(Feedback f:feedList) {
 			st.addRow(f.getFeedbackId()+"",f.getStudent().getStudentName(),f.getBook().getTitle(),f.getComment(),f.getRating()+"");
-//			System.out.println(f.getStudent().getStudentName()+" "+f.getBook().getTitle()+" "+f.getComment()+" "+f.getRating());
-		
 		}
 		st.print();
 		
 	}
-	private static void findStudentbyUsername(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void findStudentbyUsername(Scanner sc) {
 		// TODO Auto-generated method stub
 		System.out.println("Enter Username");
 		String username=sc.next();
 		
 		LibrarianDao ld=new LibrarianDaoImpl();
-		List<Student> stdList=ld.findByUsername(username);
+		List<Student> stdList = null;
+		try {
+			stdList = ld.findByUsername(username);
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		CommandLineTable st = new CommandLineTable();
 		st.setHeaders("Id","Student Name","Username","Feedback","Fine");
 		st.setShowVerticalLines(true);
@@ -192,10 +219,16 @@ public class LibrarianUi {
 		st.print();
 	}
 	
-	private static void findAllStudent() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void findAllStudent() {
 		// TODO Auto-generated method stub
 		LibrarianDao ld=new LibrarianDaoImpl();
-		List<Student> stdList=ld.findAllStudent();
+		List<Student> stdList = null;
+		try {
+			stdList = ld.findAllStudent();
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		CommandLineTable st = new CommandLineTable();
 		st.setHeaders("Id","Student Name","Username","Feedback","Fine");
 		st.setShowVerticalLines(true);
@@ -224,22 +257,25 @@ public class LibrarianUi {
 	
 	
 	
-	private static void deleteStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void deleteStudent(Scanner sc) {
 		// TODO Auto-generated method stub
 		System.out.println("Enter Id of Student you want to be deleted");
 		int id=sc.nextInt();
 		LibrarianDao ld=new LibrarianDaoImpl();
-		if(ld.deleteStudent(id)) {
-			System.out.println("Deleted Successfully");
-		}else{
-			System.out.println("Student Not Found");
+		try {
+			if(ld.deleteStudent(id)) {
+				System.out.println("Deleted Successfully");
+			}else{
+				System.out.println("Student Not Found");
+			}
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
-public static void main(String[] args) throws SomethingWentWrongException, NoRecordFoundException {
 	
-	
-//	findStudentbyUsername();
+public static void main(String[] args) {
 	
 	Scanner sc= new Scanner(System.in);
 	

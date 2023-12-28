@@ -3,7 +3,6 @@ package com.smartlab.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import com.smartlab.entity.Book;
@@ -22,7 +21,7 @@ import jakarta.persistence.Query;
 public class StudentDaoImpl implements StudentDao {
 
 	@Override
-	public Student save(Student student) throws SomethingWentWrongException {
+	public Student save(Student student) {
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -33,18 +32,14 @@ public class StudentDaoImpl implements StudentDao {
 			em.persist(student);
 			et.commit();
 		}catch(IllegalArgumentException ex) {
-			throw new SomethingWentWrongException("Unable to process request, try again later");
+			ex.printStackTrace();
 		}finally{
 			em.close();
 		}
 		return student;
 	}
 
-//	@Override
-//	public Student findByUsername(String username) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 
 	@Override
 	public List<Book> findAvailableBooks() throws SomethingWentWrongException, NoRecordFoundException {
@@ -149,7 +144,7 @@ return bookList;
 	}
 
 	@Override
-	public void updateRental(Rental rental)throws SomethingWentWrongException, NoRecordFoundException {
+	public boolean updateRental(Rental rental)throws SomethingWentWrongException, NoRecordFoundException {
 		// TODO Auto-generated method stub
 		EntityManager em = null;
 		EntityTransaction et=null;
@@ -176,6 +171,7 @@ return bookList;
 					
 				}
 				et.commit();
+				return true;
 			}
 			
 		}catch(IllegalArgumentException ex) {
@@ -183,6 +179,7 @@ return bookList;
 		}finally{
 			em.close();
 		}
+		return false;
 	}
 	@Override
 	public void updateName(String stdName)throws SomethingWentWrongException, NoRecordFoundException {
@@ -298,11 +295,12 @@ return bookList;
 			query.setParameter("username", username);
 			query.setParameter("password", password);
 			
-			List<Student> listStd = (List<Student>)query.getResultList();
-//			System.out.println(listStd);
+			
+			List<Student> listStd =null;
+			listStd= query.getResultList();
 			if(listStd == null) {
+				throw new NoRecordFoundException("The username or password is Incorrect");
 				
-				System.out.println("The username or password is Incorrect");
 				
 			}
 

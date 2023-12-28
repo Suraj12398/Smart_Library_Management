@@ -16,7 +16,7 @@ public interface LibrarianService {
 //	    boolean updateBookInformation(Librarian librarian, Book book);
 //	    boolean removeBook(Librarian librarian, Book book);
 	    List<Rental> viewStudentRentals();
-	    List<Feedback> viewBookFeedbacks();
+	    List<Feedback> viewBookFeedbacks() throws SomethingWentWrongException, NoRecordFoundException;
 //	    void logout(Librarian librarian);
 		Book addBook(Book book) throws SomethingWentWrongException, NoRecordFoundException;
 		boolean removeBook(int id) throws SomethingWentWrongException ,NoRecordFoundException;

@@ -18,16 +18,21 @@ import com.smartlab.entity.SessionStd;
 import com.smartlab.entity.Student;
 import com.smartlab.exception.NoRecordFoundException;
 import com.smartlab.exception.SomethingWentWrongException;
+import com.smartlab.service.LibrarianService;
+import com.smartlab.service.LibrarianServiceImpl;
+import com.smartlab.service.StudentService;
+import com.smartlab.service.StudentServiceImpl;
 
 public class StudentUi {
 	
 	
-	private static void availableBook() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void availableBook(){
 		// TODO Auto-generated method stub
 		Scanner sc=new Scanner(System.in);
-		StudentDao sd=new StudentDaoImpl();
 		
-		List<Book> bookList=sd.findAvailableBooks();
+		StudentService sd=new StudentServiceImpl();
+		
+		List<Book> bookList=sd.viewAvailableBooks();
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
@@ -51,12 +56,12 @@ public class StudentUi {
 		
 	}
 	
-	private static void searchByGenre(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void searchByGenre(Scanner sc) {
 		// TODO Auto-generated method stub
-		StudentDao sd=new StudentDaoImpl();
+		StudentService sd=new StudentServiceImpl();
 		System.out.println("Enter Genre you waant to search");
 		String genre=sc.next();
-		List<Book> bookList=sd.searchBooksByGenre(genre);
+		List<Book> bookList=sd.searchBooksByCriteria(genre);
 		CommandLineTable st = new CommandLineTable();
 		st.setShowVerticalLines(true);
 		System.out.println("\n");
@@ -79,9 +84,9 @@ public class StudentUi {
 		st.print();
 		
 	}
-	private static void searchByTitle(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void searchByTitle(Scanner sc){
 		// TODO Auto-generated method stub
-		StudentDao sd=new StudentDaoImpl();
+		StudentService sd=new StudentServiceImpl();
 		System.out.println("Enter Title of book You want to Search");
 		String title=sc.next();
 		List<Book> bookList=sd.searchBooksByTitle(title);
@@ -110,39 +115,27 @@ public class StudentUi {
 		st.print();
 		
 		
-//		Scanner sc= new Scanner(System.in);
 		
 		
 	}
-	private static void registerStudent(Scanner sc) throws SomethingWentWrongException {
+	private static void registerStudent(Scanner sc){
 		// TODO Auto-generated method stub
 		System.out.println("Please Add Student");
-//		Student std1=new Student("Suraj Deosarkar","sd","sd",new ArrayList<Rental>());
-//		Student std2=new Student("sumit kumar","sk","sk",new ArrayList<Rental>());
-//		Student std3=new Student("Pavan Deshmukh","pd","pd",new ArrayList<Rental>());
-//		Student std4=new Student("Pankaj Shinde","ps","ps",new ArrayList<Rental>());
-//		Student std5=new Student("Pankaj Anand","pa","pa",new ArrayList<Rental>());
-		StudentDao ls=new StudentDaoImpl();
+
+		StudentService sd=new StudentServiceImpl();
 		System.out.println("Enter Student Name");
 		String name=sc.next();
 		System.out.println("Enter Username");
 		String username=sc.next();
 		System.out.println("Enter Password");
 		String password=sc.next();
-		Student std=new Student(name,username,password,new ArrayList<Rental>());
-		Student t=ls.save(std);
-//		ls.save(std2);
-//		ls.save(std3);
-//		ls.save(std4);
-//		ls.save(std5);
-		if(t==null) {
-			System.out.println("no Student added");
-		}else {
-			System.out.println("Student added successfull");
-		}
+		
+		sd.registerStudent(name, username, password);
+
+		
 		
 	}
-	private static void viewProfile() throws SomethingWentWrongException, NoRecordFoundException {
+	private static void viewProfile(){
 		// TODO Auto-generated method stub
 		StudentDao ls=new StudentDaoImpl();
 		CommandLineTable st = new CommandLineTable();
@@ -184,19 +177,34 @@ public class StudentUi {
 			case "1":
 				System.out.println("Enter new Profile name");
 				String stdName=sc.nextLine();
+			try {
 				ls.updateName(stdName);
+			} catch (SomethingWentWrongException | NoRecordFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				StudentUi.main(null);
 				break;
 			case "2":
 				System.out.println("Enter Adding Wallet");
 				long stdBalance=sc.nextLong();
+			try {
 				ls.updateBalance(stdBalance);
+			} catch (SomethingWentWrongException | NoRecordFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				StudentUi.main(null);
 				break;
 			case "3":
 				System.out.println("Enter new Password");
 				String stdPassword=sc.nextLine();
+			try {
 				ls.changePassword(stdPassword);
+			} catch (SomethingWentWrongException | NoRecordFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 				StudentUi.main(null);
 				break;
 			case "4":
@@ -216,21 +224,20 @@ public class StudentUi {
 	
 	
 	}
-	private static void loginStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void loginStudent(Scanner sc) {
 		// TODO Auto-generated method stub
-//		Scanner sc= new Scanner(System.in);
-//		
+
+		
 		System.out.println("Enter Your Username");
 		String username=sc.next();
 		System.out.println("Enter Your Password");
 		String password=sc.next();
 		
 		
-//		String username="sk";
-//		String password="sk";
+
 		
-	StudentDao ls=new StudentDaoImpl();
-	ls.login(username,password);
+		StudentService sd=new StudentServiceImpl();
+		sd.login(username,password);
 		
 		
 		System.out.println("Welcome "+ SessionStd.getCurrentStd().getStudentName());
@@ -289,19 +296,24 @@ public class StudentUi {
 	}
 	
 
-	private static void deleteStudent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void deleteStudent(Scanner sc){
 		// TODO Auto-generated method stub
 		System.out.println("Are You Sure You want to Delete Your Account");
 		System.out.println("Enter y for confirmation enter n if not want to delete");
 		String cnf=sc.next();
 		if(cnf.equals("y")) {
 			int id=SessionStd.getCurrentStd().getStudentId();
-			LibrarianDao ld=new LibrarianDaoImpl();
-			if(ld.deleteStudent(id)) {
-				System.out.println("Deleted Successfully");
-				StudentUi.main(null);
-			}else{
-				System.out.println("Student Not Found");
+			LibrarianService ld=new LibrarianServiceImpl();
+			try {
+				if(ld.removeBook(id)) {
+					System.out.println("Deleted Successfully");
+					StudentUi.main(null);
+				}else{
+					System.out.println("Student Not Found");
+				}
+			} catch (SomethingWentWrongException | NoRecordFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}else if (cnf.equals("n")) {
 			System.out.println("Thank you so much");
@@ -313,57 +325,68 @@ public class StudentUi {
 		
 	}
 
-	private static void bookRent(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void bookRent(Scanner sc){
 		// TODO Auto-generated method stub
-		StudentDao ls=new StudentDaoImpl();
-		ls.findAvailableBooks().forEach(a->System.out.println(a));
+		StudentService ls=new StudentServiceImpl();
+		ls.viewAvailableBooks().forEach(a->System.out.println(a));
 		System.out.println("Enter Book Id You want to Rent");
 		int id=sc.nextInt();
 		StudentDao st=new StudentDaoImpl();
-		Book book=st.findBookById(id);
+		Book book = null;
+		try {
+			book = st.findBookById(id);
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Rental rental=new Rental(SessionStd.getCurrentStd(),book,Date.valueOf(LocalDate.now()),null);
-		st.saveRental(rental);
+		try {
+			st.saveRental(rental);
+		} catch (SomethingWentWrongException | NoRecordFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	private static void returnBook(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void returnBook(Scanner sc){
 		// TODO Auto-generated method stub
-		StudentDao ls=new StudentDaoImpl();
-//		Scanner sc=new Scanner(System.in);
+		StudentService st=new StudentServiceImpl();
+
 		System.out.println("Enter Rental Id You want to Return");
 		int id=sc.nextInt();
 		System.out.println("Enter Book Id You want to Return");
 		int idb=sc.nextInt();
-//		int id=1;
-//		int idb=1;
-		StudentDao st=new StudentDaoImpl();
-		Book book=st.findBookById(idb);
-		Rental rental=new Rental(SessionStd.getCurrentStd(),book,Date.valueOf(LocalDate.now()),Date.valueOf("2023-07-23"));
+
+
 		
-//		Rental rental=new Rental(null,book,Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now()));
+		Book book=st.findBookById(idb);
+		Rental rental=new Rental(SessionStd.getCurrentStd(),book,Date.valueOf(LocalDate.now()),Date.valueOf(LocalDate.now()));
+		
+
 		
 		rental.setRentalId(id);
-		st.updateRental(rental);
+		st.returnBook(rental);
 		
 		
 	}
-	private static void giveFeedback(Scanner sc) throws SomethingWentWrongException, NoRecordFoundException {
+	private static void giveFeedback(Scanner sc){
 		// TODO Auto-generated method stub
-		StudentDao ls=new StudentDaoImpl();
+		StudentService sd=new StudentServiceImpl();
 		System.out.println("Enter Book Id");
 		int id=sc.nextInt();
-		StudentDao st=new StudentDaoImpl();
-		Book book=st.findBookById(id);
+		
+		Book book=sd.findBookById(id);
 		System.out.println("Give Feedback");
 		String msg=sc.nextLine();
 		sc.next();
 		System.out.println("Enter Book Rating");
 		int rating=sc.nextInt();
-		Feedback feedback=new Feedback(SessionStd.getCurrentStd(),book,msg,rating);
-		st.saveFeedback(feedback);
+
+		sd.provideFeedback(SessionStd.getCurrentStd(), book, msg, rating);
 	}
 	
 	
-public static void main(String[] args) throws SomethingWentWrongException,NoRecordFoundException {
+public static void main(String[] args) {
 	Scanner sc= new Scanner(System.in);
 	System.out.println("Welcome");
 	String choice = "0";
@@ -392,35 +415,9 @@ public static void main(String[] args) throws SomethingWentWrongException,NoReco
 		}
 	}while(choice != "0");
 	sc.close();
-//			loginStudent(sc);
-			
-			
-			
-		
-	
-	
-	
-//	availableBook();
-//	registerStudent();
-//	searchByGenre();
-//	searchByTitle();
-//	loginStudent();
-//	bookRent();
-//	returnBook();
-//	giveFeedback();
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

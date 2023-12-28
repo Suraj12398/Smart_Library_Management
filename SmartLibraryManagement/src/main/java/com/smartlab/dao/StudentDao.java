@@ -16,7 +16,7 @@ public interface StudentDao {
     List<Book> findAvailableBooks() throws SomethingWentWrongException,NoRecordFoundException;
     List<Book> searchBooksByGenre(String genre) throws SomethingWentWrongException, NoRecordFoundException;
     void saveRental(Rental rental) throws SomethingWentWrongException, NoRecordFoundException;
-    void updateRental(Rental rental) throws SomethingWentWrongException, NoRecordFoundException;
+    boolean updateRental(Rental rental) throws SomethingWentWrongException, NoRecordFoundException;
     void saveFeedback(Feedback feedback) throws SomethingWentWrongException, NoRecordFoundException;
 	List<Book> searchBooksByTitle(String title) throws SomethingWentWrongException, NoRecordFoundException;
 	void login(String username, String password) throws SomethingWentWrongException, NoRecordFoundException;
